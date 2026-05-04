@@ -5,7 +5,7 @@ CREATE TABLE utilisateur (
     email VARCHAR(150) NOT NULL UNIQUE,
     mot_de_passe VARCHAR(255) NOT NULL,
     role VARCHAR(50) NOT NULL DEFAULT 'agriculteur'
-):
+);
 
 CREATE TABLE parcelle (
     id_parcelle INT PRIMARY KEY AUTO_INCREMENT,
@@ -26,7 +26,7 @@ CREATE TABLE culture (
     date_semis DATE NOT NULL,
     date_recolte_prevue DATE,
     statut VARCHAR(50) NOT NULL DEFAULT 'en cours',
-    id_parcelle INT NOT NULL
+    id_parcelle INT NOT NULL,
     FOREIGN KEY (id_parcelle) REFERENCES parcelle(id_parcelle)
 );
 
@@ -48,9 +48,7 @@ CREATE TABLE meteo (
     temperature FLOAT NOT NULL,
     humidite FLOAT NOT NULL,
     precipitation FLOAT NOT NULL,
-    vent FLOAT NOT NULL,
-    id_parcelle INT NOT NULL,
-    FOREIGN KEY (id_parcelle) REFERENCES parcelle(id_parcelle)
+    vent FLOAT NOT NULL
 );
 
 CREATE TABLE regle_alerte (
