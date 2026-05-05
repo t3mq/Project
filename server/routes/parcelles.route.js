@@ -1,19 +1,12 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express'
+import { getAllParcelles, getParcelleById, createParcelle, updateParcelle, deleteParcelle } from '../controllers/parcelles.controller.js'
 
-const parcelleController = require('../controllers/parcelles.controller');
+const router = express.Router()
 
-// GET
-router.get('/', parcelleController.getAllParcelles);
-router.get('/:id', parcelleController.getParcelleById);
+router.get('/', getAllParcelles)
+router.get('/:id', getParcelleById)
+router.post('/', createParcelle)
+router.put('/:id', updateParcelle)
+router.delete('/:id', deleteParcelle)
 
-// POST
-router.post('/', parcelleController.createParcelle);
-
-// PUT
-router.put('/:id', parcelleController.updateParcelle);
-
-// DELETE
-router.delete('/:id', parcelleController.deleteParcelle);
-
-module.exports = router;
+export default router

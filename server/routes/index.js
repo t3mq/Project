@@ -1,9 +1,9 @@
 import express from 'express'
-import culturesRouter from './cultures.js'
-import parcellesRouter from './parcelles.js'
+import culturesRouter from './cultures.route.js'
+import parcellesRouter from './parcelles.route.js'
 import observationsRouter from './observations.js'
 import meteoRouter from './meteo.js'
-import alertesRouter from './alertes'
+import alertesRouter from './alertes.routes.js'
 
 const router = express.Router()
 
