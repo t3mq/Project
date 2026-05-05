@@ -1,17 +1,15 @@
-const db = require('../config/database.ts').default;
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 // GET toutes les parcelles
 exports.getAllParcelles = async (req, res) => {
     try {
-        const [parcelles] = await db.query('SELECT * FROM parcelle');
-        const [cultures] = await db.query('SELECT * FROM culture');
-
-        const parcellesAvecCultures = parcelles.map(parcelle => ({
-            ...parcelle,
-            cultures: cultures.filter(culture => culture.id_parcelle === parcelle.id_parcelle)
-        }));
-
-        res.json(parcellesAvecCultures);
+        const parcelles = await prisma.parcelle.findMany({
+            include: {
+                cultures: true
+            }
+        });
+        res.json(parcelles);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -22,7 +20,10 @@ exports.getParcelleById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const [parcelles] = await db.query('SELECT * FROM parcelle WHERE id_parcelle = ?', [parseInt(id)]);
+        const parcelle = await prisma.parcelle.findUnique({
+            where: { id_parcelle: parseInt(id) },
+            include: { cultures: true }
+        });
 
         if (!parcelles.length) {
             return res.status(404).json({ message: "Parcelle non trouvée" });
@@ -31,7 +32,8 @@ exports.getParcelleById = async (req, res) => {
         const [cultures] = await db.query('SELECT * FROM culture WHERE id_parcelle = ?', [parseInt(id)]);
         const parcelle = { ...parcelles[0], cultures };
 
-        res.json(parcelle);
+        const [cultures] = await pool.query('SELECT * FROM culture WHERE id_parcelle = ?', [id]);
+        res.json({ ...parcelle, cultures });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -42,13 +44,19 @@ exports.createParcelle = async (req, res) => {
     const { nom, surface, latitude, longitude, description, id_utilisateur } = req.body;
 
     try {
-        const [result] = await db.query(
-            'INSERT INTO parcelle (nom, surface, latitude, longitude, description, date_creation, id_utilisateur) VALUES (?, ?, ?, ?, ?, NOW(), ?)',
-            [nom, surface, latitude, longitude, description, id_utilisateur]
-        );
+        const parcelle = await prisma.parcelle.create({
+            data: {
+                nom,
+                surface,
+                latitude,
+                longitude,
+                description,
+                date_creation: new Date(),
+                id_utilisateur
+            }
+        });
 
-        const [rows] = await db.query('SELECT * FROM parcelle WHERE id_parcelle = ?', [result.insertId]);
-        res.status(201).json(rows[0]);
+        res.status(201).json(parcelle);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -60,13 +68,18 @@ exports.updateParcelle = async (req, res) => {
     const { nom, surface, latitude, longitude, description } = req.body;
 
     try {
-        await db.query(
-            'UPDATE parcelle SET nom = ?, surface = ?, latitude = ?, longitude = ?, description = ? WHERE id_parcelle = ?',
-            [nom, surface, latitude, longitude, description, parseInt(id)]
-        );
+        const parcelle = await prisma.parcelle.update({
+            where: { id_parcelle: parseInt(id) },
+            data: {
+                nom,
+                surface,
+                latitude,
+                longitude,
+                description
+            }
+        });
 
-        const [rows] = await db.query('SELECT * FROM parcelle WHERE id_parcelle = ?', [parseInt(id)]);
-        res.json(rows[0]);
+        res.json(parcelle);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -77,7 +90,10 @@ exports.deleteParcelle = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await db.query('DELETE FROM parcelle WHERE id_parcelle = ?', [parseInt(id)]);
+        await prisma.parcelle.delete({
+            where: { id_parcelle: parseInt(id) }
+        });
+
         res.json({ message: "Parcelle supprimée" });
     } catch (error) {
         res.status(500).json({ error: error.message });
