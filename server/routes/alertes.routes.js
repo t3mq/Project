@@ -1,12 +1,11 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express'
+import { getAllAlertes, getAlerteById, resolveAlerte, triggerAlertes } from '../controllers/alertes.controller.js'
 
-const alerteController = require('../controllers/alertes.controller');
+const router = express.Router()
 
-// GET toutes les alertes
-router.get('/', alerteController.getAlertes);
+router.get('/', getAllAlertes)
+router.get('/:id', getAlerteById)
+router.put('/:id/resolve', resolveAlerte)
+router.post('/run', triggerAlertes)
 
-// POST lancer génération alertes
-router.post('/run', alerteController.runAlertes);
-
-module.exports = router;
+export default router
