@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const parcelleController = require('../controllers/parcelle.controller');
+const parcelleController = require('../controllers/parcelles.controller');
 
 // GET
 router.get('/', parcelleController.getAllParcelles);
