@@ -1,5 +1,5 @@
-# Ignore client app folder
-client/
+# (client/ is tracked in the repo)
+# Node modules (global and nested)
 
 # Node modules (global and nested)
 node_modules/
