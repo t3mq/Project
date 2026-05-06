@@ -33,8 +33,8 @@ export default function Layout({ page, setPage, children }) {
     <>
       <div style={s.sidebar}>
         <div style={s.logo}>
-          AgriScope
-          <div style={s.sub}>Test Backend</div>
+          DashFarm
+          <div style={s.sub}>Backend v1</div>
         </div>
         {NAV.map(n => (
           <button key={n.key} style={s.navItem(page === n.key)} onClick={() => setPage(n.key)}>
