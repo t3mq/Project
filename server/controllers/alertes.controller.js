@@ -1,4 +1,4 @@
-import db from '../config/database.ts'
+import db from '../config/database.js'
 import { runAlertes } from '../services/alertes.service.js'
 
 // GET /alertes
@@ -55,6 +55,7 @@ export const resolveAlerte = async (req, res, next) => {
 export const triggerAlertes = async (req, res, next) => {
     try {
         const alertes = await runAlertes()
+        console.log("Alertes générées :", alertes)
         res.json({
             alertes_creees: alertes.length,
             detail: alertes

@@ -1,86 +1,130 @@
-import { useEffect, useState } from 'react'
-import { api } from '../api'
-import { Card, Badge, Table, Btn, Alert, Spinner } from '../components/ui'
+import { useEffect, useState } from "react";
+import { api } from "../api";
 
 export default function Alertes() {
-  const [rows, setRows]         = useState([])
-  const [loading, setLoading]   = useState(true)
-  const [error, setError]       = useState(null)
-  const [success, setSuccess]   = useState(null)
-  const [running, setRunning]   = useState(false)
+  const [alertes, setAlertes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const load = () => {
-    setLoading(true)
-    api.alertes.getAll()
-      .then(setRows)
-      .catch(e => setError(e.message))
-      .finally(() => setLoading(false))
-  }
+  useEffect(() => {
+    loadAlertes();
+  }, []);
 
-  useEffect(() => { load() }, [])
-
-  const resolve = async (id) => {
+  const loadAlertes = async () => {
     try {
-      await api.alertes.resolve(id)
-      setSuccess(`Alerte #${id} résolue.`)
-      load()
-    } catch (e) { setError(e.message) }
-  }
+      const data = await api.alertes.getAll();
+      setAlertes(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const runEngine = async () => {
-    setRunning(true)
+  const runAlertes = async () => {
     try {
-      const res = await api.alertes.run()
-      setSuccess(`Moteur exécuté — ${res.alertes_creees} alerte(s) créée(s).`)
-      load()
-    } catch (e) { setError(e.message) }
-    finally { setRunning(false) }
-  }
+      await api.alertes.run();
+      loadAlertes();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-  const active  = rows.filter(a => a.statut === 'active')
-  const resolue = rows.filter(a => a.statut === 'resolue')
+  const resolveAlerte = async (id) => {
+    try {
+      await api.alertes.resolve(id);
+      loadAlertes();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-  const columns = [
-    { key: 'id_alerte',   label: 'ID' },
-    { key: 'niveau',      label: 'Niveau',  render: v => <Badge level={v}/> },
-    { key: 'statut',      label: 'Statut',  render: v => <Badge level={v}/> },
-    { key: 'message',     label: 'Message' },
-    { key: 'culture_nom', label: 'Culture' },
-    { key: 'regle_nom',   label: 'Règle' },
-    { key: 'date_alerte', label: 'Date',    render: v => new Date(v).toLocaleString('fr-FR') },
-  ]
+  const getBadge = (niveau) => {
+    switch (niveau) {
+      case "danger":
+        return { color: "#fff", bg: "#e53935", label: "Danger" };
+      case "warning":
+        return { color: "#000", bg: "#fbc02d", label: "Warning" };
+      default:
+        return { color: "#fff", bg: "#1e88e5", label: "Info" };
+    }
+  };
+
+  if (loading) return <p>Chargement des alertes...</p>;
 
   return (
-    <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2 style={{ fontSize: 20, fontWeight: 800 }}>🔔 Alertes</h2>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <Btn onClick={load} variant="ghost">↻ Rafraîchir</Btn>
-          <Btn onClick={runEngine} variant="warning" disabled={running}>
-            {running ? 'Exécution…' : '⚡ Déclencher le moteur'}
-          </Btn>
-        </div>
-      </div>
+    <div style={{ padding: 20 }}>
+      <h1>🚨 Alertes</h1>
 
-      <Alert msg={error}   type="error"   onClose={() => setError(null)}/>
-      <Alert msg={success} type="success" onClose={() => setSuccess(null)}/>
+      <button onClick={runAlertes} style={{ marginBottom: 15 }}>
+        Générer les alertes
+      </button>
 
-      <Card title={`Actives (${active.length})`}>
-        {loading ? <Spinner/> : (
-          <Table
-            columns={columns}
-            rows={active}
-            onAction={row => row.statut === 'active'
-              ? <Btn small onClick={() => resolve(row.id_alerte)} variant="ghost">Résoudre</Btn>
-              : null
-            }
-          />
-        )}
-      </Card>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Culture</th>
+            <th>Règle</th>
+            <th>Message</th>
+            <th>Niveau</th>
+            <th>Statut</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-      <Card title={`Historique résolues (${resolue.length})`}>
-        {loading ? <Spinner/> : <Table columns={columns} rows={resolue}/>}
-      </Card>
-    </>
-  )
+        <tbody>
+          {alertes.map((a) => {
+            const badge = getBadge(a.niveau);
+
+            return (
+              <tr
+                key={a.id_alerte}
+                style={{
+                  borderBottom: "1px solid #ddd",
+                  background:
+                    a.niveau === "danger"
+                      ? "#ffe5e5"
+                      : a.niveau === "warning"
+                      ? "#fff8e1"
+                      : "white",
+                }}
+              >
+                <td>{new Date(a.date_alerte).toLocaleDateString()}</td>
+
+                {/* ✅ adapté à ton SQL */}
+                <td>{a.culture_nom || "-"}</td>
+                <td>{a.regle_nom || "-"}</td>
+
+                <td>{a.message}</td>
+
+                <td>
+                  <span
+                    style={{
+                      background: badge.bg,
+                      color: badge.color,
+                      padding: "4px 8px",
+                      borderRadius: "5px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {badge.label}
+                  </span>
+                </td>
+
+                <td>{a.statut}</td>
+
+                <td>
+                  {a.statut === "active" && (
+                    <button onClick={() => resolveAlerte(a.id_alerte)}>
+                      Résoudre
+                    </button>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }
