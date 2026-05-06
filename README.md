@@ -249,7 +249,7 @@ npm install
 
 #### Frontend
 ```bash
-cd ../front
+cd ../client
 npm install
 ```
 
@@ -271,6 +271,7 @@ NODE_ENV=development
 
 # JWT
 JWT_SECRET=your_super_secret_key_here
+JWT_EXPIRES_IN=7d
 
 # API
 API_BASE_URL=http://localhost:3000
