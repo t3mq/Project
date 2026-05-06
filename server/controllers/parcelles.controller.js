@@ -1,4 +1,4 @@
-import db from '../config/database.ts'
+import db from '../config/database.js'
 
 // GET /parcelles
 export const getAllParcelles = async (req, res, next) => {

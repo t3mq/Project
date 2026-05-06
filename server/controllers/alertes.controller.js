@@ -1,4 +1,4 @@
-import db from '../config/database.ts'
+import db from '../config/database.js'
 import { runAlertes } from '../services/alertes.service.js'
 
 // GET /alertes

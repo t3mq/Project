@@ -3,7 +3,7 @@ import culturesRouter from './cultures.route.js'
 import parcellesRouter from './parcelles.route.js'
 import observationsRouter from './observations.js'
 import meteoRouter from './meteo.js'
-import alertesRouter from './alertes.routes.js'
+import alertesRouter from './alertes'
 
 const router = express.Router()
 

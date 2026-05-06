@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { api } from '../api'
 import { KpiCard, Card, Badge, Alert, Spinner, Btn } from '../components/ui'
+import dynamic from 'react-dynamic-import'
+import MapLeaflet from '../components/MapLeaflet'
 
 export default function Dashboard() {
   const [parcelles, setParcelles] = useState([])
@@ -48,6 +50,15 @@ export default function Dashboard() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+
+            {/* Map */}
+            <div style={{ gridColumn: '1 / -1', height: 320 }}>
+              <Card title="Carte des parcelles" style={{ height: '100%' }}>
+                <div style={{ height: '260px' }}>
+                  <MapLeaflet parcelles={parcelles} />
+                </div>
+              </Card>
+            </div>
 
         {/* Parcelles */}
         <Card title="Dernières parcelles">

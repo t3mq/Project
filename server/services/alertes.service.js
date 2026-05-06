@@ -1,4 +1,4 @@
-import db from '../config/database.ts'
+import db from '../config/database.js'
 
 export const runAlertes = async () => {
     const [regles] = await db.query('SELECT * FROM regle_alerte')

@@ -1,4 +1,4 @@
-import db from '../config/database.ts'
+import db from '../config/database.js'
 
 // GET /meteo?limit=7&id_parcelle=1
 export const getMeteo = async (req, res, next) => {
