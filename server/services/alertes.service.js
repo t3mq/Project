@@ -2,8 +2,8 @@ import db from '../config/database.js'
 
 export const runAlertes = async () => {
     const [regles] = await db.query('SELECT * FROM regle_alerte')
-    const [meteos] = await db.query('ORDER BY date_meteo DESC LIMIT 1')
-    const [cultures] = await db.query('SELECT * FROM culture WHERE statut = "en cours')
+    const [meteos] = await db.query('SELECT * FROM meteo ORDER BY date_meteo DESC LIMIT 1')
+    const [cultures] = await db.query('SELECT * FROM culture WHERE statut = "en cours"')
 
     if (!meteos.length) return []
 

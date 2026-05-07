@@ -1,6 +1,3 @@
-# (client/ is tracked in the repo)
-# Node modules (global and nested)
-
 # Node modules (global and nested)
 node_modules/
 **/node_modules/
