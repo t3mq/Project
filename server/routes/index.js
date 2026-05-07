@@ -1,17 +1,11 @@
 import express from 'express'
 import culturesRouter from './cultures.route.js'
 import parcellesRouter from './parcelles.route.js'
-<<<<<<< Updated upstream
-import observationsRouter from './observations.js'
-import meteoRouter from './meteo.js'
-import alertesRouter from './alertes.route.js'
-=======
 import observationsRouter from './observations.route.js'
 import meteoRouter from './meteo.route.js'
-import alertesRouter from './alertes.routes.js'
+import alertesRouter from './alertes.route.js'
 import typeCulturesRouter from './type_cultures.route.js'
 import authRouter from './auth.routes.js'
->>>>>>> Stashed changes
 
 const router = express.Router()
 

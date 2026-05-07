@@ -107,8 +107,9 @@ export const Meteo = () => {
     const [error, setError]           = useState<string | null>(null);
     const [limit, setLimit]           = useState('30');
     const [parcelleId, setParcelleId] = useState('');
+    const [lastAppliedCount, setLastAppliedCount] = useState<number | null>(null);
 
-    const load = (isRefresh = false) => {
+    const load = (isRefresh = false, isApply = false) => {
         if (isRefresh) setRefreshing(true);
         else setLoading(true);
         setError(null);
@@ -121,6 +122,7 @@ export const Meteo = () => {
                 setRows(data);
                 setLatest(lat);
                 setChart7([...last7].reverse());
+                if (isApply) setLastAppliedCount(data.length);
             })
             .catch(e => setError(e.message))
             .finally(() => { setLoading(false); setRefreshing(false); });
@@ -296,12 +298,17 @@ export const Meteo = () => {
                         </div>
                     </Field>
                     <div className="flex gap-2 pb-0.5">
-                        <Btn onClick={() => load()}>
+                        <Btn onClick={() => { load(false, true); }}>
                             <Filter size={12} strokeWidth={2.2} />
                             Appliquer
                         </Btn>
                     </div>
                 </div>
+                {lastAppliedCount !== null && (
+                    <div className="mt-3 text-[13px]" style={{ color: 'var(--text-muted)' }}>
+                        Affiche <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{lastAppliedCount}</span> entrée{lastAppliedCount !== 1 ? 's' : ''}
+                    </div>
+                )}
             </motion.div>
 
             {/* ── Historical table ─────────────────────────────────── */}

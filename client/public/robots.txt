@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /parcelles
+Disallow: /cultures
+Disallow: /alertes
+Disallow: /meteo
+Disallow: /auth
+Sitemap: https://dashfarm.fr/sitemap.xml

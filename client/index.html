@@ -1,17 +1,81 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="theme-color" content="#09090b" />
-    <title>DashFarm — Gestion agricole intelligente</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin=""/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+
+    <title>DashFarm — Gestion agricole intelligente | Parcelles, Cultures, Météo & Alertes</title>
+    <meta name="description" content="DashFarm : plateforme de gestion agricole intelligente. Suivez vos parcelles, cultures, météo et alertes en temps réel pour optimiser votre exploitation." />
+    <link rel="canonical" href="https://dashfarm.fr/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DashFarm" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content="DashFarm — Gestion agricole intelligente | Parcelles, Cultures, Météo & Alertes" />
+    <meta property="og:description" content="DashFarm : plateforme de gestion agricole intelligente. Suivez vos parcelles, cultures, météo et alertes en temps réel pour optimiser votre exploitation." />
+    <meta property="og:url" content="https://dashfarm.fr/" />
+    <meta property="og:image" content="https://dashfarm.fr/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="DashFarm — Plateforme de gestion agricole intelligente" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="DashFarm — Gestion agricole intelligente" />
+    <meta name="twitter:description" content="Suivez vos parcelles, cultures, météo et alertes en temps réel pour optimiser votre exploitation agricole." />
+    <meta name="twitter:image" content="https://dashfarm.fr/og-image.png" />
+
+    <!-- Favicon & Apple Touch Icon -->
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+
+    <!-- DNS Prefetch & Preconnect -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Font Preload & Stylesheet -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800;900&display=swap" as="style" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "name": "DashFarm",
+            "url": "https://dashfarm.fr",
+            "logo": "https://dashfarm.fr/logo.png",
+            "description": "DashFarm est une plateforme de gestion agricole intelligente permettant le suivi des parcelles, cultures, météo et alertes en temps réel."
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "DashFarm",
+            "url": "https://dashfarm.fr",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "description": "Plateforme de gestion agricole intelligente : parcelles, cultures, météo et alertes en temps réel.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <p>Veuillez activer JavaScript pour utiliser DashFarm, votre plateforme de gestion agricole intelligente.</p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

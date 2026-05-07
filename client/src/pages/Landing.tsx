@@ -9,6 +9,11 @@ import {
 } from 'lucide-react'
 import { useIsMobile } from '../components/Layout'
 
+// ── SEO: Page title ──────────────────────────────────────────────────────────
+function usePageTitle(title: string) {
+    useEffect(() => { document.title = title }, [title])
+}
+
 // ── Motion presets ────────────────────────────────────────────────────────────
 const EASE = [0.22, 1, 0.36, 1] as const
 const SPRING = { type: 'spring', stiffness: 320, damping: 28 } as const
@@ -73,6 +78,7 @@ function Nav() {
     return (
         <>
             <motion.nav
+                aria-label="Navigation principale"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, ease: EASE }}
@@ -172,7 +178,10 @@ function Nav() {
                             Commencer <ArrowRight size={12} strokeWidth={2.5} />
                         </motion.button>
                         {isMobile && (
-                            <button onClick={() => setMenuOpen(v => !v)}
+                            <button
+                                onClick={() => setMenuOpen(v => !v)}
+                                aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+                                aria-expanded={menuOpen}
                                 style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', padding: 4, display: 'flex' }}
                             >
                                 {menuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -434,8 +443,12 @@ function Hero() {
                         </div>
                         <img
                             src="/presentation.png"
-                            alt="Aperçu du dashboard DashFarm"
-                            style={{ display: 'block', width: '100%' }}
+                            alt="Tableau de bord DashFarm montrant la gestion des parcelles agricoles, cultures et données météo en temps réel"
+                            width={980}
+                            height={612}
+                            loading="eager"
+                            fetchPriority="high"
+                            style={{ display: 'block', width: '100%', height: 'auto' }}
                         />
                     </motion.div>
                 </motion.div>
@@ -1222,7 +1235,7 @@ function Footer() {
     ]
 
     return (
-        <footer style={{ background: '#09090b', borderTop: '1px solid rgba(255,255,255,0.05)', padding: isMobile ? '72px 20px 36px' : '100px 24px 52px' }}>
+        <footer role="contentinfo" style={{ background: '#09090b', borderTop: '1px solid rgba(255,255,255,0.05)', padding: isMobile ? '72px 20px 36px' : '100px 24px 52px' }}>
             <div style={{ maxWidth: 1200, margin: '0 auto' }}>
 
                 {/* Main grid */}
@@ -1322,18 +1335,103 @@ function Footer() {
     )
 }
 
+// ── SEO: FAQ Schema JSON-LD ───────────────────────────────────────────────────
+function FAQSchema() {
+    const faqData = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+            {
+                '@type': 'Question',
+                name: 'DashFarm est-il vraiment gratuit ?',
+                acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: "Oui, la version gratuite est complète et sans limite de durée. Gérez jusqu'à 5 parcelles et 2 cultures actives sans aucun frais, sans carte bancaire.",
+                },
+            },
+            {
+                '@type': 'Question',
+                name: 'Comment fonctionnent les alertes intelligentes ?',
+                acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: "Les alertes se déclenchent automatiquement selon des règles configurables : conditions météo, stades de culture, seuils d'humidité. Chaque alerte inclut une action recommandée.",
+                },
+            },
+            {
+                '@type': 'Question',
+                name: 'Mes données agricoles sont-elles sécurisées ?',
+                acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'Vos données sont hébergées en France, chiffrées en transit (HTTPS) et au repos. Nous ne partageons aucune donnée avec des tiers.',
+                },
+            },
+            {
+                '@type': 'Question',
+                name: 'Puis-je utiliser DashFarm sur mobile ?',
+                acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: "Oui, l'interface est entièrement responsive et optimisée pour smartphones et tablettes. Consultez votre tableau de bord partout au champ.",
+                },
+            },
+            {
+                '@type': 'Question',
+                name: 'Comment exporter mes données ?',
+                acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: "Avec la version Pro, exportez vos données en CSV ou générez des rapports PDF détaillés. L'API REST vous permet aussi d'intégrer DashFarm à vos outils existants.",
+                },
+            },
+        ],
+    }
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqData) }}
+        />
+    )
+}
+
+// ── SEO: Breadcrumb Schema ───────────────────────────────────────────────────
+function BreadcrumbSchema() {
+    const data = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Accueil',
+                item: 'https://dashfarm.fr/',
+            },
+        ],
+    }
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+        />
+    )
+}
+
 // ── Landing ───────────────────────────────────────────────────────────────────
-export const Landing = () => (
-    <div style={{ overflowX: 'hidden', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" }}>
+export const Landing = () => {
+    usePageTitle('DashFarm — Gestion agricole intelligente | Parcelles, Cultures, Météo & Alertes')
+    return (
+    <div style={{ overflowX: 'hidden', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" }} role="document">
+        <FAQSchema />
+        <BreadcrumbSchema />
         <Nav />
-        <Hero />
-        <Stats />
-        <Features />
-        <HowItWorks />
-        <SocialProof />
-        <Pricing />
-        <FAQ />
-        <CTABanner />
+        <main>
+            <Hero />
+            <Stats />
+            <Features />
+            <HowItWorks />
+            <SocialProof />
+            <Pricing />
+            <FAQ />
+            <CTABanner />
+        </main>
         <Footer />
     </div>
-)
+    )
+}

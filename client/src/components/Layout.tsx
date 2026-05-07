@@ -282,6 +282,8 @@ export const AppLayout = () => {
                 } : {}}
                 className="w-[248px] shrink-0 flex flex-col h-full"
                 id="sidebar"
+                role="navigation"
+                aria-label="Menu principal"
             >
                 <div className="flex flex-col h-full bg-[#111110] border-r border-white/[0.04]">
                     {/* Logo */}
@@ -353,21 +355,24 @@ export const AppLayout = () => {
             <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
                 {/* Topbar */}
-                <header className="h-14 bg-[var(--bg-surface)] border-b border-[var(--border)] px-4 flex items-center gap-3 shrink-0 relative z-[100]"
+                <header role="banner" className="h-14 bg-[var(--bg-surface)] border-b border-[var(--border)] px-4 flex items-center gap-3 shrink-0 relative z-[100]"
                     style={{ boxShadow: 'var(--shadow-xs)' }}>
                     {isMobile && (
-                        <button onClick={() => setSidebarOpen(v => !v)}
+                        <button
+                            onClick={() => setSidebarOpen(v => !v)}
+                            aria-label={sidebarOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+                            aria-expanded={sidebarOpen}
                             className="w-8 h-8 rounded-[var(--radius-sm)] border border-[var(--border)] flex items-center justify-center cursor-pointer text-[var(--text-secondary)] shrink-0 hover:bg-[var(--bg-secondary)] transition-colors bg-transparent">
                             <Menu size={16} />
                         </button>
                     )}
 
                     {/* Breadcrumb */}
-                    <div className="flex items-center gap-1.5 text-[12.5px]">
+                    <nav aria-label="Fil d'Ariane" className="flex items-center gap-1.5 text-[12.5px]">
                         <span className="text-[var(--text-muted)] font-medium">DashFarm</span>
-                        <ChevronRight size={12} className="text-[var(--text-muted)]" />
-                        <span className="text-[var(--text-primary)] font-semibold">{currentNav?.label ?? 'Page'}</span>
-                    </div>
+                        <ChevronRight size={12} className="text-[var(--text-muted)]" aria-hidden="true" />
+                        <span className="text-[var(--text-primary)] font-semibold" aria-current="page">{currentNav?.label ?? 'Page'}</span>
+                    </nav>
 
                     <div className="flex-1" />
 
@@ -384,6 +389,8 @@ export const AppLayout = () => {
                     <div ref={bellRef} className="relative">
                         <button
                             onClick={() => setNotifOpen(v => !v)}
+                            aria-label={`Notifications${alertCount > 0 ? ` (${alertCount} nouvelle${alertCount > 1 ? 's' : ''})` : ''}`}
+                            aria-expanded={notifOpen}
                             className={`relative w-8 h-8 rounded-[var(--radius-sm)] flex items-center justify-center cursor-pointer transition-all border
                                 ${notifOpen
                                     ? 'bg-[var(--accent-muted)] border-emerald-200/40 text-[var(--accent)]'

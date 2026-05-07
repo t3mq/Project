@@ -131,7 +131,45 @@
 
   #root {
     min-height: 100vh;
+    min-height: 100dvh;
     isolation: isolate;
+  }
+
+  /* ── CLS Prevention ────────────────────────────────── */
+  img, video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── Reduce motion for accessibility ────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ── Skip to content (accessibility) ────────────────── */
+  .skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 8px 16px;
+    background: var(--accent);
+    color: white;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-to-content:focus {
+    top: 12px;
   }
 
   input, button, select, textarea {
