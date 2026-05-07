@@ -18,7 +18,7 @@ const fadeUp = {
     hidden: { opacity: 0, y: 18, scale: 0.97 },
     show: (i: number) => ({
         opacity: 1, y: 0, scale: 1,
-        transition: { delay: i * 0.07, duration: 0.48, ease: [0.22, 1, 0.36, 1] },
+        transition: { delay: i * 0.07, duration: 0.48, ease: [0.22, 1, 0.36, 1] as const },
     }),
 };
 
@@ -135,7 +135,6 @@ export const Meteo = () => {
         value: Math.round(m.humidite),
     }));
 
-    const iconProps = { size: 14, strokeWidth: 2 };
     const accentIconProps = { size: 14, strokeWidth: 2, color: '#fff' };
 
     return (
@@ -349,11 +348,11 @@ export const Meteo = () => {
                     <div className="p-5 flex flex-col gap-4">
                         {[1, 2, 3, 4, 5].map(i => (
                             <div key={i} className="flex items-center gap-6">
-                                <Skeleton w="w-32" />
-                                <Skeleton w="w-20" />
-                                <Skeleton w="w-36" />
-                                <Skeleton w="w-20" />
-                                <Skeleton w="w-20" />
+                                <Skeleton className="w-32 h-4" />
+                                <Skeleton className="w-20 h-4" />
+                                <Skeleton className="w-36 h-4" />
+                                <Skeleton className="w-20 h-4" />
+                                <Skeleton className="w-20 h-4" />
                             </div>
                         ))}
                     </div>
