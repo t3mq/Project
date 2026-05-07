@@ -8,7 +8,7 @@ import {
     Sun, Cloud, CloudLightning, ArrowRight, Download, Plus,
     CheckCircle2, TrendingUp,
 } from 'lucide-react'
-import { Icon } from './Icon'
+
 import { FarmMap } from './FarmMap'
 import { HumidityChart } from './Charts'
 import { useIsMobile, Skeleton } from './Layout'

@@ -172,13 +172,13 @@ export const Parcelles = () => {
                     <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 14 }}>
                         {[1, 2, 3, 4].map(i => (
                             <div key={i} className="flex items-center gap-4">
-                                <Skeleton w="w-7" h="h-7" rounded="rounded-lg" />
-                                <Skeleton w="w-36" />
-                                <Skeleton w="w-16" />
-                                <Skeleton w="w-24" />
-                                <Skeleton w="w-24" />
-                                <Skeleton w="w-20" />
-                                <Skeleton w="w-20" />
+                                <Skeleton className="w-7 h-7 rounded-lg" />
+                                <Skeleton className="w-36 h-4" />
+                                <Skeleton className="w-16 h-4" />
+                                <Skeleton className="w-24 h-4" />
+                                <Skeleton className="w-24 h-4" />
+                                <Skeleton className="w-20 h-4" />
+                                <Skeleton className="w-20 h-4" />
                             </div>
                         ))}
                     </div>
