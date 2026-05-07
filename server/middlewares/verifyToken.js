@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 const verifyToken = (req, res, next) => {
-    const header = req.heanders.authorization
+    const header = req.headers.authorization
     if (!header || !header.startsWith('Bearer ')) {
         return res.status(401).json({ error: 'Token manquant' })
     }
